@@ -1,3 +1,5 @@
+# PlanetStore-Dashboard
+
 Planetstore Distributed Object Storage System
 Planetstore is a high-performance, distributed object storage engine inspired by AWS S3, built with modern cloud-native principles.It supports erasure coding, deduplication, versioning, multi-region replication, quotas, auth, rate-limiting, monitoring, and a full React admin dashboard.
 This is not a toy project, it is a mini-S3 with real distributed-systems engineering.
@@ -353,5 +355,4 @@ Multi-node parallel I/O
 
 
 This project demonstrates full-stack distributed-systems engineering, cloud concepts, backend architecture, and frontend dashboarding.
-# PlanetStore-Dashboard
-# PlanetStore-Dashboard
+
