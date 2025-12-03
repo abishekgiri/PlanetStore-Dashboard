@@ -1,0 +1,104 @@
+version: "3.9"
+
+services:
+  gateway:
+    build:
+      context: ./gateway
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    environment:
+      # 6 nodes for EC (e.g., 4 data + 2 parity)
+      STORAGE_NODES: "node1:http://storage-node-1:9001,node2:http://storage-node-2:9002,node3:http://storage-node-3:9003,node4:http://storage-node-4:9004,node5:http://storage-node-5:9005,node6:http://storage-node-6:9006"
+      DB_URL: "postgresql://user:password@db:5432/planetstore"
+      REPLICATION_FACTOR: "6" # Using all 6 for now, logic will handle EC
+    volumes:
+      - ./gateway:/app
+    depends_on:
+      - db
+      - storage-node-1
+      - storage-node-2
+      - storage-node-3
+      - storage-node-4
+      - storage-node-5
+      - storage-node-6
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: planetstore
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  storage-node-1:
+    build:
+      context: ./storage_node
+    command: uvicorn main:app --host 0.0.0.0 --port 9001
+    environment:
+      NODE_ID: "node1"
+      DATA_DIR: "/data"
+    volumes:
+      - node1_data:/data
+
+  storage-node-2:
+    build:
+      context: ./storage_node
+    command: uvicorn main:app --host 0.0.0.0 --port 9002
+    environment:
+      NODE_ID: "node2"
+      DATA_DIR: "/data"
+    volumes:
+      - node2_data:/data
+
+  storage-node-3:
+    build:
+      context: ./storage_node
+    command: uvicorn main:app --host 0.0.0.0 --port 9003
+    environment:
+      NODE_ID: "node3"
+      DATA_DIR: "/data"
+    volumes:
+      - node3_data:/data
+
+  storage-node-4:
+    build:
+      context: ./storage_node
+    command: uvicorn main:app --host 0.0.0.0 --port 9004
+    environment:
+      NODE_ID: "node4"
+      DATA_DIR: "/data"
+    volumes:
+      - node4_data:/data
+
+  storage-node-5:
+    build:
+      context: ./storage_node
+    command: uvicorn main:app --host 0.0.0.0 --port 9005
+    environment:
+      NODE_ID: "node5"
+      DATA_DIR: "/data"
+    volumes:
+      - node5_data:/data
+
+  storage-node-6:
+    build:
+      context: ./storage_node
+    command: uvicorn main:app --host 0.0.0.0 --port 9006
+    environment:
+      NODE_ID: "node6"
+      DATA_DIR: "/data"
+    volumes:
+      - node6_data:/data
+
+volumes:
+  db_data:
+  node1_data:
+  node2_data:
+  node3_data:
+  node4_data:
+  node5_data:
+  node6_data:

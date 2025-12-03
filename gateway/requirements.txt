@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+requests
+sqlalchemy
+psycopg2-binary
+zfec
+python-multipart
+APScheduler==3.10.4
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
